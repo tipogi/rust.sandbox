@@ -45,6 +45,25 @@ let contents = match std::fs::read_to_string("kv.db") {
 let contents = std::fs::read_to_string("kv.db")?;
 ```
 
-## Source
+## Videos
 
 - [Introduction to Rust Part 1](https://www.youtube.com/watch?v=WnWGO-tLtLA)
+- [The Rust Lang Book](https://www.youtube.com/playlist?list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8)
+- [Pointers and dynamic memory - stack vs heap](https://www.youtube.com/watch?v=_8-ht2AKyH4)
+- [Visualizing memory layout of Rust's data types](https://www.youtube.com/watch?v=rDoqT-a6UFg)
+
+## Sources
+
+- [Learn Rust](https://www.rust-lang.org/learn): Rust official documentation
+- [Docs rs](https://docs.rs/): Docs.rs is an open source documentation host for crates
+- [Rust Playground](https://play.rust-lang.org/)
+- [Rust Language Cheat Sheet](https://cheats.rs/)
+- [Ideomatic Rust](https://github.com/grunch/idiomatic-rust): A peer-reviewed collection of articles/talks/repos which teach concise, idiomatic Rust.
+- [Rustlings](https://github.com/rust-lang/rustlings): Small exercises to get you used to reading and writing Rust code!
+- [Crates.io](https://crates.io/): The Rust community’s crate registry
+- [Take your first steps with Rust](https://learn.microsoft.com/en-us/training/paths/rust-first-steps/)
+
+## Books
+
+- Programming Rust: Fast, Safe Systems Development by Jason Orendorff, Jim Blandy, and Leonora F.S. Tindall
+- The Rust Programming Language by Steve Klabnik and Carol Nichols
