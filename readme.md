@@ -1,6 +1,6 @@
 # Rust Sandbox
 
-<p align="center"><img src="./img/socialcard.png" alt="social card"></p>
+<p align="center"><img src="./rust-cover.png" alt="Rust cover"></p>
 
 In this repository, you can find some steps to start learning Rust languague. Mostly, it uses youtube platform playlist to get the knowledge but also can be some useful portals
 
