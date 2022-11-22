@@ -21,48 +21,29 @@ fn main() {
     println!("[LOG] KVStore: The key/value is {}-{} ", key, value);
     //
     let contents = format!("{}\t{}\n", key, value);
-
-
     // write() returns a Result to avoid the io::Error if something goes wrong
     // The first unit is the success value which is empty Tuple known as unit. It is similar to void
     // but the second one is the error value
-    //let write_result = std::fs::write("kv.db", contents);
+    let write_result = std::fs::write("kv.db", contents);
     // Other OPTION would be to use unwrap to crash the program directly
     //let write_result = std::fs::write("kv.db", contents).unwrap();
     // Evaluate with patter matching the result
-    /*match write_result {
+    match write_result {
         Ok(()) => {
             print!("The key/value added successfuly");
         }
         Err(e) => {
             print!("{}", e);
         }
-    }*/
-
-
-
-
-    // MORE TO DIG: This is not a reference, it is allocated in the stack
-    let mut database = Database::new().expect("Creating db failed!!");
-    // We just borrow and create new String to not loss the ownership because in the second insert
-    // we lost
-    database.insert(key.to_uppercase(), value.clone());
-    database.insert(key, value);
-    // Here we pass the owership to the flush function and like this we avoid to do
-    // more operations with the database.
-    // When we finish flush function, the datbase variable is deallocated
-    // Could be good practise in some scenarios
-    match database.flush() {
-        Ok(()) => println!("YAY!"),
-        Err(err) => println!("OH NOS! Error! {}", err)
     }
+    // MORE TO DIG: This is not a reference, it is allocated in the stack
+    let database = Database::new();
 }
 
 // In Rust we create the type with its types and after we have the implementation
 // where we add the methods and associated functions of the type
 struct Database {
-    map: HashMap<String, String>,
-    flush: bool,
+    map: HashMap<String, String>
 }
 
 impl Database {
@@ -83,58 +64,7 @@ impl Database {
             map.insert(key.to_owned(), value.to_owned());
         }
         // Instantiate new Database struct
-        return Result::Ok(Database { map, flush: false });
-    }
-
-    // This is not an associated function, it is a method because it receives
-    // as first argument self
-    fn insert(&mut self, key: String, value: String) {
-        // Insert is a function of the hashMap
-        self.map.insert(key, value);
-    }
-
-    // If its ok the result it return unit, similar than void
-    // Implemented in drop trait
-    fn flush(mut self) -> std::io::Result<()> {
-        self.flush = true;
-        do_flush(&self)
+        return Result::Ok(Database { map: map });
     }
 }
 
-// drop traits: It is a way to specify a behaivour when an own value has reached
-// the end of its life or goes out of scope and it is dropped
-// By default all the memory is freed even we reimplement that drop function
-// but we can add extra functionality
-
-// TRAITS: A way of specifying functionality for multiple types, in a similar way
-// that are interfaces in another languagues
-
-impl Drop for Database {
-    fn drop(&mut self) {
-        if !self.flush {
-            // Ignore the output of the flush
-            let _ = do_flush(self);
-        }
-    }
-}
-// What are Prelude: Types and functions that are automatically imported to the scope 
-
-fn do_flush(database: &Database) -> std::io::Result<()> {
-    let mut contents = String::new();
-    // Deconstruct the tuple result
-    for (key, value) in &database.map {
-        //let keypair = format!("{}\t{}\n", key, value);
-        // Even is waiting a &str, we pass &String. What is does the compiler automatic deref
-        //contents.push_str(&keypair);
-        // More efficient code would be the below code, because we do not need to borrow and
-        // after desctruct or deallocate 'keypair' variable
-        contents.push_str(&key);
-        contents.push('\t');
-        contents.push_str(&value);
-        contents.push('\n');
-    }
-    // Calms down the compiler
-    //todo!("Missing the return")
-    // Write in the database
-    std::fs::write("kv.db", contents)
-}
