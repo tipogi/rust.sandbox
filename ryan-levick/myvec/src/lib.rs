@@ -94,7 +94,7 @@ impl <T> MyVec<T> {
                 ptr
             }
             self.ptr = ptr;
-            self.len = +1;
+            self.len += 1;
             self.capacity = new_capacity;
         }
     }
