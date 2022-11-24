@@ -8,3 +8,4 @@ The following files belongs to each chapter of the rust book. Some of the chapte
 - CHAPTER 5 (`structs`): Are the building blocks for creating new types in Rust: Grouping related data, define methods, associated functions and comparison
 - CHAPTER 6 (`enum`): Let us to enumerate a list of variants. Variants are namespaced under their identifier. option enum, pattern matching
 - CHAPTER 7 (`others/chapter-7`): Module system: Packages, crates, modules, privacy rules, paths, scope, exporting
+- CHAPTER 8 (`collections`): Allocated in the heap and can grow as need it. Vector, string, hashmap
