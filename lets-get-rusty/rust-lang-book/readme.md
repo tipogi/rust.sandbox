@@ -11,3 +11,4 @@ The following files belongs to each chapter of the rust book. Some of the chapte
 - CHAPTER 8 (`collections`): Allocated in the heap and can grow as need it. Vector, string, hashmap
 - CHAPTER 9 (`errorHandling`): Error handling, panic macro, Result enum, unwrap, expect, question mark operator
 - CHAPTER 10 (): Generics, traits and lifetimes. Used to reduce code duplication
+- CHAPTER 11 (`others/chapter-11`): Run test using command line arguments, how to organise unit tests and integration tests
