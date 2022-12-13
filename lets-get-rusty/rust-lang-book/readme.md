@@ -14,4 +14,5 @@ The following files belongs to each chapter of the rust book. Some of the chapte
 - CHAPTER 11 (`others/chapter-11`): Run test using command line arguments, how to organise unit tests and integration tests
 - CHAPTER 12 (`others/chapter-12`): CLI program
 - CHAPTER 13 (`closures`, `iterators`): Clousures
-- CHAPTER
+- CHAPTER 14 (`workspaces`- pending): Cargo, crates.io and workspaces
+- CHAPTER 15
