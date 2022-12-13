@@ -25,6 +25,8 @@ pub fn run(config:Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+// An improved version of that using iterators: 
+// https://www.youtube.com/watch?v=rb63xJEjaZU&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8&index=19
 pub struct Config {
     pub query: String,
     pub filename: String,
