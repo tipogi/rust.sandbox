@@ -15,4 +15,4 @@ The following files belongs to each chapter of the rust book. Some of the chapte
 - CHAPTER 12 (`others/chapter-12`): CLI program
 - CHAPTER 13 (`closures`, `iterators`): Clousures
 - CHAPTER 14 (`workspaces`- pending): Cargo, crates.io and workspaces
-- CHAPTER 15
+- CHAPTER 15 (`smart pointers`): 
