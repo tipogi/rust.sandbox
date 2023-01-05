@@ -68,6 +68,8 @@ Like in all binary files, the main function is `main` function
 ## Sources
 
 - [Learn Rust](https://www.rust-lang.org/learn): Rust official documentation
+- [Rust by example](https://doc.rust-lang.org/rust-by-example/index.html): Rust by Example (RBE) is a collection of runnable examples that illustrate various Rust concepts and standard libraries
+- [Rust Standard library](https://doc.rust-lang.org/std/index.html): API reference
 - [Docs rs](https://docs.rs/): Docs.rs is an open source documentation host for crates
 - [Rust Playground](https://play.rust-lang.org/)
 - [Rust Language Cheat Sheet](https://cheats.rs/)

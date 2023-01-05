@@ -3,12 +3,13 @@
 // The most common pointer in Rust, is a reference. References simply borrows the values
 // they point to, meaning that they do not have ownership over the values. References does not have
 // any special capabilities which also means they do not have much overhead unlike smart pointers
+
 // Smart pointers are data structures that act like a pointer but have metadata and extra capabilities
 // tacked on. 
 // One example is a reference counting smart pointer which allows a piece of data to have multiple
 // owners by keeping track of the owners and once there are no more owners, cleaning up the data
 // In many cases, smart pointers own the data that they point to unlike references which simply 
-// borrow the calues
+// borrow the values
 // String and Vectors are smart pointers because they own some data and allow you to manipulate it,
 // they store extra metadata such a capacity and they have extra capabilites.
 // For example, the string type ensures that the data is valid utf-8
