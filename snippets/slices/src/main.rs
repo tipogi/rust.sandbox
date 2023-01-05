@@ -1,59 +1,24 @@
-#![allow(unused)]
 fn main() {
-    test_window_method(3);
-    test_any_method();
-    compare_two_slices_with_windows_method();
-    raw_comparison_of_slices();
-    get_slice_from_slice();
+    production_rate_per_hour(3);
+    working_items_per_minute(5);
 }
 
-fn get_slice_from_slice() {
-    let array_of_numbers: [i32; 5] = [1, 2, 3, 4, 5];
-    let other_list = [ 2, 3, 4];
-    let slice_chunk = &array_of_numbers[1..4];
-    println!("From 1 to 3 index: {:?}", slice_chunk);
-    if other_list == array_of_numbers[1..4] {
-        println!("Equal comparison of slices!")
+pub fn production_rate_per_hour(speed: u8) -> f64 {
+    //let produced_cars = (221 * speed) as f64;
+    // If we do not do that conversion, we get `attempt to multiply with overflow`
+    let produced_cars = 221.0 * speed as f64;
+    match speed {
+        5..=8   => final_production_number(90.0, produced_cars), 
+        9..=10  => final_production_number(77.0, produced_cars),
+        _ => produced_cars
     }
 }
 
-fn raw_comparison_of_slices() {
-    let first_slice = [1, 2, 3];
-    let second_slice = [1, 2, 3];
-    if first_slice == second_slice {
-        println!("RAW: Equal slices");
-    } else {
-        println!("RAW: Not equal slices");
-    }
-
-    println!("RAW: Equal two slices? {}", first_slice.eq(&second_slice));
+pub fn final_production_number(percentage: f64, produced_cars: f64) -> f64 {
+    (produced_cars * percentage) / 100.0
 }
 
-fn compare_two_slices_with_windows_method() {
-    let first_list = [1, 2, 3, 4, 5, 6, 7, 8 ,9];
-    let second_list = [4, 3, 4];
-    let mut windows = first_list.windows(second_list.len());
-    let superlist = windows.any(|x| {
-        println!("x value: {:?}", x);
-        x == second_list
-    });
-    println!("Is it a superlist? {}", superlist);
-}
-
-fn test_window_method(split: usize) {
-    let slice = ['r', 'u', 's', 't', 'y', 'k', 'r', 'u', 's', 't', 'y'];
-    let iter = slice.windows(split);
-    for window in iter {
-        println!("{:?}", window);
-    }
-}
-
-fn test_any_method() {
-    let slice2 = ['r', 'u', 's', 't'];
-    let iter2 = slice2.iter().any(|&x|  {
-        println!("Element: {}", x);
-        x == 's'
-    });
-    println!("Has char: {}", iter2);
-    println!("Length of iter2: {}", slice2.len());
+pub fn working_items_per_minute(speed: u8) -> u32 {
+    let produced_cars = production_rate_per_hour(speed);
+    (produced_cars / 60.0) as u32
 }
