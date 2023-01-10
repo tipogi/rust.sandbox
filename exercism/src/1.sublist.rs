@@ -1,3 +1,5 @@
+//URL: https://exercism.org/tracks/rust/exercises/sublist
+
 #[derive(Debug, PartialEq, Eq)]
 pub enum Comparison {
     Equal,
@@ -7,7 +9,6 @@ pub enum Comparison {
 }
 
 
-//https://exercism.org/tracks/rust/exercises/sublist
 fn main() {
     let a_list = [1, 2, 3, 4];
     let b_list = [1, 2, 3];

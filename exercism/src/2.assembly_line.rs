@@ -1,3 +1,5 @@
+// URL: https://exercism.org/tracks/rust/exercises/assembly-line
+
 fn main() {
     production_rate_per_hour(3);
     working_items_per_minute(5);

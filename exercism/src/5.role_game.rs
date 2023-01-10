@@ -1,3 +1,5 @@
+// URL: https://exercism.org/tracks/rust/exercises/role-playing-game
+
 #![allow(unused)]
 
 use std::cmp::min;

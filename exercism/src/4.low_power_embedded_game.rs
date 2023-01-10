@@ -1,3 +1,5 @@
+//URL: https://exercism.org/tracks/rust/exercises/low-power-embedded-game
+
 #![allow(unused)]
 
 pub fn divmod(dividend: i16, divisor: i16) -> (i16, i16) {

@@ -1,3 +1,5 @@
+//URL: https://exercism.org/tracks/rust/exercises/health-statistics
+
 pub struct User {
     name: String,
     age: u32,
