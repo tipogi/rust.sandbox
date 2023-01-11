@@ -1,4 +1,4 @@
-// URL:
+// URL:https://exercism.org/tracks/rust/exercises/allergies
 
 use self::Allergen::*;
 
