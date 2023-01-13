@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 unicode-segmentation = "1.10.0"
 time = "0.3"
+itertools = "0.10.5"
