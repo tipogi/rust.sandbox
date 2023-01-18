@@ -1,4 +1,7 @@
 TODOs (✔/☐)
 
-☐ Dig into dereference (*), when to use
+☐ Practise with String vector, copy, clone. Understand traits
+✔ Dig into dereference (*), when to use
+☐ Break a iterator loop inside the closure
 ☐ Dig into lifetimes
+☐ Rust By practise could be great place to understand better rust
