@@ -12,7 +12,8 @@ fn main() {
     generate_workout(simulated_insensity, simulated_random_number);
 }
 
-// Use the memoization pattern by creating a struct which will hold our clousure
+// Use the memoization pattern(keed the value in some attrib: value in our case)
+// by creating a struct which will hold our clousure
 // and the result of our clousre
 // In order to define structs, enums or function parameters that use closures, 
 // we need to use generics and trait bounds
@@ -57,8 +58,10 @@ fn generate_workout(intensity: u32, randon_number: u32) {
     // For regular functions we would have to specify the types
     // And that's because functions are part of an explicit interface exposed to users so
     // agreeing on the types being passed in and returned is important
+    //
     // Closures usually are short and only relevant within a narrow context so, the compiler 
     // is able to determine the input parameter types and the types
+    //
     // The same happen with variables
     // Clousures have one concrete type inferred for each input parameter. Compiler defines
     // as input type, the first type passed into the closure

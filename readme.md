@@ -27,6 +27,7 @@ Like in all binary files, the main function is `main` function
 - Create the binari: First, it does type check after, build the binary file: `cargo build`
 - Release binary: `cargo build --release`
 - Run the binary: It builds the binary and after runs the binary. `cargo run`
+- To check the trace of the error: `RUST_BACKTRACE=1 cargo run`
 
 ## Visual Studio Code Plugins
 

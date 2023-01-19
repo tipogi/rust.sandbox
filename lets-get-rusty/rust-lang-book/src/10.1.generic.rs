@@ -23,7 +23,7 @@ impl<T, U> Point<T, U> {
     }
 }
 
-// Available function for the ones that has x and y a float(f64)
+// Available function for the ones that has x and y a float(f64) TYPE
 // For other Point types y() is not going to be available.
 // Test with point_a of generic_struct fntion
 impl Point<f64, f64> {
@@ -32,7 +32,7 @@ impl Point<f64, f64> {
   }
 }
 
-// WARNING: When is generic type always after `impl` add the generic types
+// WARNING: When is GENERIC type always after `impl` add the generic types
 // Implementation block has two generics for our Point struct and after
 // `mixup` has its own set of generics: V and W and are scoped to mixup function
 impl<T, U> Point<T, U> {

@@ -58,6 +58,7 @@ pub struct Forth {
 }
 
 fn parse_builtin(input: &str, new_operation: bool) -> Result<ForthWord, Error> {
+    println!("Builtin: {:?}", input);
     // Create string literal
     // check if that keyword is in the hashmap
     let operation = match input.to_lowercase().as_str() {
@@ -95,6 +96,7 @@ impl Forth {
         let mut res: Result<(), Error> = Ok(());
         // Loop the the forth sequence
         for word in forth_sequence {
+            if word == "" { continue; }
             // Initialise the operator
             let mut operation = Ok(ForthWord::Init);
             // If it is new operation, we are creating a new operation for the forth machine
@@ -130,12 +132,16 @@ impl Forth {
                     self.push(i);
                     Ok(())
                 },
-                Ok(ForthWord::CustomExpr) => return self.exec_custom_expr(word),
+                Ok(ForthWord::CustomExpr) => self.exec_custom_expr(word),
                 Err(error) => return Err(error),
-                _ => return Err(Error::UnknownWord)
+                _ => {
+                    println!("match op error: {:?}", operation);
+                    return Err(Error::UnknownWord);
+                }
             };
         }
         if res.is_err() {
+            println!("error");
             return res;
         }
         if new_operation {
@@ -216,7 +222,7 @@ impl Forth {
 
     // Stack Manipulation
     fn dup(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
+        if self.stack.len() < 1 { return Err(Error::StackUnderflow); }
         let number = self.pop();
         self.push(number);
         self.push(number);
@@ -260,12 +266,13 @@ fn main() {
     let task_b = "3 2 * 4 DUP";
     let task_c = ": 3 2 +";
     let task_d = "3 2 * 4 SWAp";
-    let task_e = ": dup-twice dup dup ;";
+    let task_e1 = ": dup-twice dup dup ;";
     let task_e2 = "1 dup-twice";
     let task_ = ": EL 1 2 + ; : el 2 * 3 ; 1 2 + el +";
+    let task_f = ": one 1 ; : two 2 ; one two +";
     let mut machine_one = Forth::new();
-    println!("{:#?}", machine_one.eval(task_e)); 
-    println!("{:#?}", machine_one.new_op); 
-    println!("{:#?}", machine_one.eval(task_e2)); 
+    println!("{:#?}", machine_one.eval(task_f)); 
+    //println!("{:#?}", machine_one.new_op); 
+    //println!("{:#?}", machine_one.eval(task_e2)); 
     println!("{:?}", machine_one.stack())
 }
