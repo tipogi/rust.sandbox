@@ -1,278 +1,158 @@
-// ## Instructions ##
-// Implement an evaluator for a very simple subset of Forth.
-// Forth is a stack-based programming language. Implement a very basic evaluator for a small subset of Forth.
-// Your evaluator has to support the following words:
+use std::{iter::FromIterator};
 
-//     +, -, *, / (integer arithmetic)
-//     DUP, DROP, SWAP, OVER (stack manipulation)
+#[derive(Debug, PartialEq)]
+pub struct Node<T> {
+    data: T,
+    next: Option<Box<Node<T>>>
+}
 
-// Your evaluator also has to support defining new words using the customary syntax: : word-name definition ;.
-// To keep things simple the only data type you need to support is signed integers of at least 16 bits size.
-// You should use the following rules for the syntax: a number is a sequence of one or more (ASCII) digits, 
-// a word is a sequence of one or more letters, digits, symbols or punctuation that is not a number. 
-// (Forth probably uses slightly different rules, but this is close enough.)
-
-// Words are case-insensitive.
-
-use std::collections::HashMap;
-
-pub type Value = i32;
-
-
-pub enum ForthTypes {
-    Value
+impl<T> Node<T> {
+    pub fn new(data: T, next: Option<Box<Node<T>>>) -> Self {
+        Self {
+            data,
+            next
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]
-pub enum ForthWord {
-    Init,
-    Add,
-    Rest,
-    Mul,
-    Div,
-    Dup,
-    Drop,
-    Swap,
-    Over,
-    Number(i32),
-    Colon,
-    SemiColon,
-    // Usually would be a string chain and might return that type 
-    // when it is activated new_operation boolean
-    NewExpr,
-    CustomExpr
+pub struct SimpleLinkedList<T> {
+    head: Option<Box<Node<T>>>
 }
 
-#[derive(Debug, PartialEq, Eq)]
-pub enum Error {
-    DivisionByZero,
-    StackUnderflow,
-    UnknownWord,
-    InvalidWord,
-}
-
-#[derive(Default)]
-pub struct Forth {
-    stack: Vec<i32>,
-    new_op: HashMap<String, Vec<String>>
-}
-
-fn parse_builtin(input: &str, new_operation: bool) -> Result<ForthWord, Error> {
-    println!("Builtin: {:?}", input);
-    // Create string literal
-    // check if that keyword is in the hashmap
-    let operation = match input.to_lowercase().as_str() {
-        "+" => Ok(ForthWord::Add),
-        "-" => Ok(ForthWord::Rest),
-        "*" => Ok(ForthWord::Mul),
-        "/" => Ok(ForthWord::Div),
-        "dup" => Ok(ForthWord::Dup),
-        "drop" => Ok(ForthWord::Drop),
-        "swap" => Ok(ForthWord::Swap),
-        "over" => Ok(ForthWord::Over),
-        ":" => return Ok(ForthWord::Colon),
-        ";" => return Ok(ForthWord::SemiColon),
-        _ => if new_operation { Ok(ForthWord::NewExpr) } else { Err(Error::UnknownWord) }
-    };
-    if new_operation && operation.is_ok() {
-        return Ok(ForthWord::NewExpr);
-    }
-    return operation;
-}
-
-impl Forth {
+impl<T> SimpleLinkedList<T> {
+    // It does not have elements, the head value has to be None
     pub fn new() -> Self {
-        Self { ..Default::default() }
-    }
-
-    pub fn stack(&self) -> &[Value] {
-        &self.stack
-    }
-
-    pub fn eval(&mut self, input: &str) -> Result<(), Error> {
-        let forth_sequence = input.split(" ");
-        let mut new_operation = false;
-        let mut new_op_vec: Vec<String> = Vec::new();
-        let mut res: Result<(), Error> = Ok(());
-        // Loop the the forth sequence
-        for word in forth_sequence {
-            if word == "" { continue; }
-            // Initialise the operator
-            let mut operation = Ok(ForthWord::Init);
-            // If it is new operation, we are creating a new operation for the forth machine
-            if !new_operation { operation = self.number_or_custom_op(word); }
-            // The operation is not a number or custom expresion
-            if operation == Ok(ForthWord::Init) { operation = parse_builtin(word, new_operation); }
-            res = match operation {
-                Ok(ForthWord::Add) => self.add(),
-                Ok(ForthWord::Rest) => self.rest(),
-                Ok(ForthWord::Mul) => self.mul(),
-                Ok(ForthWord::Div) => self.div(),
-                Ok(ForthWord::Dup) => self.dup(),
-                Ok(ForthWord::Drop) => self.drop(),
-                Ok(ForthWord::Swap) => self.swap(),
-                Ok(ForthWord::Over) => self.over(),
-                Ok(ForthWord::Colon) => {
-                    new_operation = true;
-                    Ok(())
-                },
-                Ok(ForthWord::SemiColon) => {
-                    new_operation = false;
-                    let result = self.create_new_operation(&mut new_op_vec);
-                    if result.is_err() { return result; }
-                    // Reset the vector
-                    new_op_vec.clear();
-                    Ok(())
-                },
-                Ok(ForthWord::NewExpr) => {
-                    new_op_vec.push(String::from(word));
-                    Ok(())
-                },
-                Ok(ForthWord::Number(i)) => {
-                    self.push(i);
-                    Ok(())
-                },
-                Ok(ForthWord::CustomExpr) => self.exec_custom_expr(word),
-                Err(error) => return Err(error),
-                _ => {
-                    println!("match op error: {:?}", operation);
-                    return Err(Error::UnknownWord);
-                }
-            };
-        }
-        if res.is_err() {
-            println!("error");
-            return res;
-        }
-        if new_operation {
-            return Err(Error::InvalidWord);
-        }
-        Ok(())
-    }
-
-    fn exec_custom_expr(&mut self, word: &str) -> Result<(), Error>{
-        let custom_expresion = self.new_op.get(word).unwrap();
-        let mut new_op = String::new();
-        for op in custom_expresion.iter() {
-            new_op.push_str(op);
-            new_op.push_str(" ");
-        }
-        self.eval(&new_op)
-    }
-
-    fn number_or_custom_op(&self, input: &str) -> Result<ForthWord, Error>{
-        let number = input.parse::<i32>();
-        if number.is_ok() {
-            return Ok(ForthWord::Number(number.unwrap()));
-        } else if self.new_op.contains_key(input) {
-            return Ok(ForthWord::CustomExpr)
-        } else {
-            return Ok(ForthWord::Init)
+        Self {
+            head: None
         }
     }
+    
+    pub fn is_empty(&self) -> bool {
+        self.head.is_none()
+    }
 
-    fn create_new_operation(&mut self, new_op_vec: &mut Vec<String>) -> Result<(), Error> {
-        if new_op_vec.len() < 2 {
-            return Err(Error::InvalidWord);
-        } else {
-            let new_op = new_op_vec.remove(0);
-            self.new_op.insert(
-                new_op.to_lowercase(), 
-                // Create new vector and get the ownership of the value
-                new_op_vec.to_vec()
-            );
+    pub fn len(&self) -> usize {
+        let mut size: usize = 0;
+        let mut next = self.head.as_ref();
+        while let Some(node) = next {
+            size += 1;
+            next = node.next.as_ref();
         }
-        Ok(())
+        size
     }
 
-    // Error control in operations
-    // Add colom and semi colum new op
-
-    // Arithmetic Operations
-    fn add(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
-        let sum = self.pop() + self.pop();
-        self.stack.push(sum);
-        Ok(())
+    pub fn push(&mut self, _element: T) {
+        // in self.head will be None and in next, the Option
+        let next = self.head.take();
+        self.head = Some(Box::new(Node::new(_element, next)))
     }
 
-    fn rest(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
-        let right = self.pop();
-        let rest = self.pop() - right;
-        self.push(rest);
-        Ok(())
+    pub fn pop(&mut self) -> Option<T> {
+        let mut head = self.head.take()?;
+        self.head = head.next.take();
+        Some(head.data)
     }
 
-    fn mul(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
-        let sum = self.pop() * self.pop();
-        self.stack.push(sum);
-        Ok(())
+    pub fn peek(&self) -> Option<&T> {
+        // We cannot get the ownership from a borrowed variable
+        // Thats why we need as_ref
+        // == Correct-A ==
+        // match &self.head/*.as_ref()*/ {
+        //    Some(k) => Some(&k.data),
+        //    _ => None
+        //}
+        // == Correct-B ==
+        //Some(&self.head.as_ref()?.data)
+        // == Correct-C ==
+        // let node = self.head.as_ref()?;
+        // Some(&node.data)
+        let node = self.head.as_ref();
+        Some(&node?.data)
     }
 
-    fn div(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
-        // if we divide with 0. Error control
-        let divident= self.pop();
-        let sum = self.pop() / divident;
-        self.stack.push(sum);
-        Ok(())
-    }
-
-    // Stack Manipulation
-    fn dup(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 1 { return Err(Error::StackUnderflow); }
-        let number = self.pop();
-        self.push(number);
-        self.push(number);
-        Ok(())
-    }
-
-    fn drop(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 1 { return Err(Error::StackUnderflow); }
-        self.pop();
-        Ok(())
-    }
-
-    fn swap(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
-        let first = self.pop();
-        let second = self.pop();
-        self.push(second);
-        self.push(first);
-        Ok(())
-    }
-
-    fn over(&mut self) -> Result<(), Error> {
-        if self.stack.len() < 2 { return Err(Error::StackUnderflow); }
-        let over_number = self.stack[self.stack.len() - 1];
-        self.push(over_number);
-        Ok(())
-    }
-
-    fn pop(&mut self) -> i32 {
-        self.stack.pop().unwrap()
-    }
-
-    fn push(&mut self, number: i32) {
-        self.stack.push(number)
+    #[must_use]
+    pub fn rev(mut self) -> SimpleLinkedList<T> {
+        let mut reverse = Self::new();
+        loop {
+            let next = self.pop();
+            //if next.is_none() {
+            if let None = next {
+                break;
+            }
+            reverse.push(next.unwrap());
+        }
+        reverse
     }
 }
 
-fn main() {
+// Create from a iterator, a new LinkedList
+impl<T> FromIterator<T> for SimpleLinkedList<T> {
+    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self {
+        let mut list = Self::new();
+        for item in iter {
+            list.push(item)
+        }
+        list
+    }
+}
 
-    let task_a= "1 2 + 1 2 + +";
-    let task_b = "3 2 * 4 DUP";
-    let task_c = ": 3 2 +";
-    let task_d = "3 2 * 4 SWAp";
-    let task_e1 = ": dup-twice dup dup ;";
-    let task_e2 = "1 dup-twice";
-    let task_ = ": EL 1 2 + ; : el 2 * 3 ; 1 2 + el +";
-    let task_f = ": one 1 ; : two 2 ; one two +";
-    let mut machine_one = Forth::new();
-    println!("{:#?}", machine_one.eval(task_f)); 
-    //println!("{:#?}", machine_one.new_op); 
-    //println!("{:#?}", machine_one.eval(task_e2)); 
-    println!("{:?}", machine_one.stack())
+impl<T> Into<Vec<T>> for SimpleLinkedList<T> {
+    fn into(self) -> Vec<T> {
+        self.rev().into_iter().collect()
+    }
+}
+
+// Get the ownership of the simple list iterator
+impl<T> IntoIterator for SimpleLinkedList<T> {
+    type Item = T;
+    type IntoIter = IteratorSimpleLinkedList<T>;
+    fn into_iter(self) -> Self::IntoIter {
+        Self::IntoIter {
+            head: self.head
+        }
+    }
+}
+
+
+
+pub struct IteratorSimpleLinkedList<T> {
+    head: Option<Box<Node<T>>>
+}
+
+// Create a custom iterator to not mutate the original
+// and to duplicate as match as we want the list
+impl <T> Iterator for IteratorSimpleLinkedList<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let node = self.head.take()?;
+        self.head = node.next;
+        Some(node.data)
+    }
+}
+
+pub fn main() {
+    let mut linked_list = SimpleLinkedList::<u32>::new();
+    println!("{:?}", linked_list.len());
+    linked_list.push(34);
+    linked_list.push(21);
+    linked_list.push(2);
+    println!("{:?}", linked_list);
+    println!("{:?}", linked_list.len());
+    //let pop_a = linked_list.pop();
+    //let pop_b = linked_list.pop();
+    println!("LinkedList: {:?}", linked_list.rev());
+    let greeting = vec!["hello", "bye", "morning", "night"];
+    //let second_linked_list = SimpleLinkedList::from_iter(greeting);
+    //println!("{:?}", second_linked_list);
+    let mut string_linked_list = SimpleLinkedList::new();
+    string_linked_list.push("hello");
+    string_linked_list.push("bye");
+    string_linked_list.push("morning");
+    string_linked_list.push("night");
+    //let greeting_linked_list = greeting.into();
+    //assert_eq!(string_linked_list, greeting_linked_list);
+    
+
 }
