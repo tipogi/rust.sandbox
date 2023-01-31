@@ -65,6 +65,7 @@ Like in all binary files, the main function is `main` function
 - [Pointers and dynamic memory - stack vs heap](https://www.youtube.com/watch?v=_8-ht2AKyH4)
 - [Visualizing memory layout of Rust's data types](https://www.youtube.com/watch?v=rDoqT-a6UFg)
 - The streams are intended for users who are already somewhat familiar with Rust, [Jon Gjengset](https://www.youtube.com/@JonGjengset/videos)
+- [Jeff No Zhao](https://www.youtube.com/playlist?list=PLkO5ggdQuRaaeFke7nWS4ajhFVZ1biE7_)
 
 ## Sources
 

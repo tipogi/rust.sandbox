@@ -84,7 +84,7 @@ pub fn notify_c<T: Summary + Display >(item_a: &T, item_b: &T) {
   println!("Breaking news! {}", item_a.summarize());
 }*/
 
-// Use where class to define multiple traits
+// Use where clause to define multiple traits
 fn random_fn<T, U>(t: &T, u: &U) -> i32
   // T implements Display and clone and U implements Clone and Debug
   where T: Display + Clone,
