@@ -1,0 +1,12 @@
+[package]
+name = "tcp-socket"
+version = "0.1.0"
+edition = "2021"
+
+# Rust has conditional compilation flags that it can use to trigger different
+# features in a libraries
+# Tokio is a big library so, in some programs, we might not need to include all 
+# the features. For example, in a web server  we can exclude the sub process module.
+# In this case, we import all the library
+[dependencies]
+tokio = { version = "1", features = ["full"]}

@@ -10,3 +10,5 @@
 /exercism/target
 /practise/echo-play/echo*/target
 /practise/echo-play/echo*/Cargo.lock
+/practise/tcp-socket/target
+/practise/tcp-socket/Cargo.lock
