@@ -1,3 +1,4 @@
+/exercism/target
 /ryan-levick/kvstore/target
 /ryan-levick/myvec/target
 /ryan-levick/threadpool/target
@@ -6,9 +7,11 @@
 /lets-get-rusty/rust-lang-book/others/chapter-7/restaurant/target
 /lets-get-rusty/rust-lang-book/others/chapter-11/adder/target
 /lets-get-rusty/rust-lang-book/others/chapter-12/minigrep/target
-/practise/traits/aggregate/target
-/exercism/target
-/practise/echo-play/echo*/target
-/practise/echo-play/echo*/Cargo.lock
-/practise/tcp-socket/target
-/practise/tcp-socket/Cargo.lock
+/practise/theory/traits/aggregate/target
+/practise/theory/traits/aggregate/Cargo.lock
+/practise/theory/asynchronous/target
+/practise/theory/asynchronous/Cargo.lock
+/practise/playground/echo-play/echo*/target
+/practise/playground/echo-play/echo*/Cargo.lock
+/practise/playground/tcp-socket/target
+/practise/playground/tcp-socket/Cargo.lock
