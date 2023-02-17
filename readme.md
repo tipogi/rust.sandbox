@@ -28,6 +28,7 @@ Like in all binary files, the main function is `main` function
 - Release binary: `cargo build --release`
 - Run the binary: It builds the binary and after runs the binary. `cargo run`
 - To check the trace of the error: `RUST_BACKTRACE=1 cargo run`
+- Test library with output: `cargo test -- --show-output`
 
 ## Visual Studio Code Plugins
 
