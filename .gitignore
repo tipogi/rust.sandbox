@@ -3,6 +3,7 @@
 /ryan-levick/myvec/target
 /ryan-levick/threadpool/target
 /ryan-levick/lifetimes/target
+/jon-gjengset/lifetimes/target
 /lets-get-rusty/rust-lang-book/target
 /lets-get-rusty/rust-lang-book/others/chapter-7/crate/target
 /lets-get-rusty/rust-lang-book/others/chapter-7/restaurant/target
@@ -16,3 +17,11 @@
 /practise/playground/echo-play/echo*/Cargo.lock
 /practise/playground/tcp-socket/target
 /practise/playground/tcp-socket/Cargo.lock
+/practise/playground/poll/client/target
+/practise/playground/poll/client/Cargo.lock
+/practise/playground/poll/server/target
+/practise/playground/poll/server/Cargo.lock
+/practise/playground/my-redis/target
+/practise/playground/my-redis/Cargo.lock
+# IGNORE FREE PLAYGROUND
+/free

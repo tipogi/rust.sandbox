@@ -16,7 +16,7 @@ Install the following packages:
 - __socat__: TCP echo server
 
 - `socat -v tcp-l:1234, fork exec:'/bin/cat'`: Create a tcp listener (tcp-l) on port 1234.
-When someone hit the server, spun off new connection connection and call `cat` command
+When someone hit the server, spin off new connection connection and call `cat` command
 - `nc 127.0.0.1 1234`: Our client. Send some word to tcp server. Once we are connect, type words
 
 ## Source
