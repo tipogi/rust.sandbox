@@ -1,0 +1,47 @@
+[package]
+name = "grpc-demo"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "server"
+path = "src/main.rs"
+
+[[bin]]
+name = "cli"
+path = "src/cli.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# A gRPC over HTTP/2 implementation focused on high performance, interoperability, and flexibility.
+# https://docs.rs/tonic/0.8.3/tonic/
+tonic = "0.8.3"
+# Protocol buffers implementation. Generates Rust code from source .proto files
+# https://docs.rs/prost/0.11.8/prost/
+prost = "0.11.8"
+# An event-driven, non-blocking I/O platform for writing asynchronous I/O backed applications.
+# https://docs.rs/tokio/1.26.0/tokio/
+tokio = { version = "1.26", features = ["macros", "rt-multi-thread"] }
+# Utilities to work with `Stream` and `tokio`
+# https://docs.rs/tokio-stream/0.1.12/tokio_stream/
+tokio-stream = { version = "0.1.12", features = ["net"] }
+# An implementation of futures and streams featuring zero allocations, composability, and iterator-like interfaces
+# https://docs.rs/futures/0.3.27/futures/
+futures = "0.3.27"
+# A simple to use, efficient, and full-featured Command Line Argument Parser
+# https://docs.rs/clap/4.1.11/clap/
+clap = { version = "4.1.11", features = ["derive"] }
+# Server Reflection module of `tonic` gRPC implementation.
+# https://docs.rs/tonic-reflection/0.6.0/tonic_reflection/
+tonic-reflection = "0.6.0"
+
+[build-dependencies]
+# Codegen module of `tonic` gRPC implementation
+# https://docs.rs/tonic-build/0.8.4/tonic_build/
+tonic-build = "0.8.4"
+
+[dev-dependencies]
+uuid = { version = "1.2.2", features = ["v4", "fast-rng"] }
+futures-util = "0.3.25"
+anyhow = "1"

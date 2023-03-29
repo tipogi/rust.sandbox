@@ -23,5 +23,15 @@
 /practise/playground/poll/server/Cargo.lock
 /practise/playground/my-redis/target
 /practise/playground/my-redis/Cargo.lock
+/practise/playground/grpc-demo/target
+/practise/playground/grpc-demo/Cargo.lock
+/practise/playground/grpc-demo/src/store.rs
+/practise/playground/secure-hyper/target
+/practise/playground/secure-hyper/Cargo.lock
+/practise/playground/tls/tlsclient/target
+/practise/playground/tls/tlsclient/Cargo.lock
+/practise/playground/tls/tlsserver/target
+/practise/playground/tls/tlsserver/Cargo.lock
+
 # IGNORE FREE PLAYGROUND
 /free

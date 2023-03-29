@@ -74,6 +74,7 @@ Like in all binary files, the main function is `main` function
 - [Learn Rust](https://www.rust-lang.org/learn): Rust official documentation
 - [Rust by example](https://doc.rust-lang.org/rust-by-example/index.html): Rust by Example (RBE) is a collection of runnable examples that illustrate various Rust concepts and standard libraries
 - [The Rust reference](https://doc.rust-lang.org/reference/introduction.html): This book does not serve as an introduction to the language. Background familiarity with the language is assumed
+- [Rust Async Book](https://rust-lang.github.io/async-book/)
 - [Rust Standard library](https://doc.rust-lang.org/std/index.html): API reference
 - [Rust by Practise](https://practice.rs/why-exercise.html): This book was designed for easily diving into and get skilled with Rust, and it's very easy to use: All you need to do is to make each exercise compile without ERRORS and Panics !
 - [Docs rs](https://docs.rs/): Docs.rs is an open source documentation host for crates

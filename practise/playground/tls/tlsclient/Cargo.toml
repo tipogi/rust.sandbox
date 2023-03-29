@@ -1,0 +1,18 @@
+[package]
+name = "tlsclient"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+# [features]
+# dangerous_configuration = ["rustls/dangerous_configuration"]
+
+[dependencies]
+clap = { version = "4.1.6", features = ["derive"] }
+rustls = { version = "0.20.8", features = ["dangerous_configuration"] }
+# rustls = "0.20.8"
+mio = { version = "0.8.6", features = ["net", "os-poll"] }
+env_logger = "0.10.0"
+log = "0.4.17"
+rustls-pemfile = "1.0.0"
+webpki-roots = "0.22.6"
