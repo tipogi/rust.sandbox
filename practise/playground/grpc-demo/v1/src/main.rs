@@ -25,6 +25,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
    Server::builder()
            .add_service(InventoryServer::new(inventory))
+           // With that in insomnia we would be able to get all the queries that 
+           // we can do against the server
            .add_service(reflection_service)
            .serve(addr)
            .await?;

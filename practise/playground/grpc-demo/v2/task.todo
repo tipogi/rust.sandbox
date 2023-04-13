@@ -1,0 +1,15 @@
+GENERAL TODOs (✔/☐)
+
+☐ Add database connection
+☐ Add TLS for security
+☐ Create tests
+☐ Load the environment file from a .toml file
+
+DATABASE TODOs (✔/☐)
+☐ Create migration script
+☐ Connect to the database: Sqlite
+☐ Create db queries
+☐ Create app tests
+
+## STOPPED
+Error: We cannot send safetily some variable. exist_item

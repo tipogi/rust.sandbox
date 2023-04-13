@@ -6,11 +6,14 @@ use std::io::Read;
 // WHEN TO USE ERROR PROPAGATION or PANIC
 // By default use Result enum for error propagation. This prevents the program crashing
 // and like this the caller can decide which is the best way to handle that error 
-// We should only use panic, in exceptional circunstances as the recover of that error is
+
+// We should only use panic!, in exceptional circunstances as the recover of that error is
 // not possible and the program cannot continue from that state
+
 // We can use unwrap or expect in prototype code when we do not want to do error handling
 // Then when we pass the prototyping phase, we can do all the error handling identifying 
 // all the unwrap and expect functions
+
 // Lastly, we might want to use unwrap or expect, when we know that the function will
 // succeed
 

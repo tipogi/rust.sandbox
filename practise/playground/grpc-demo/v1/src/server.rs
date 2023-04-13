@@ -43,9 +43,10 @@ impl Inventory for StoreInventory {
         &self,
         request: Request<Item>
     ) -> Result<Response<InventoryChangeResponse>, Status> {
+        println!("RCP call to Add method...");
         // Consume self and return the object
         let item = request.into_inner();
-
+        
         // validate SKU, verify that it's present and not empty
         let sku = match item.identifier.as_ref() {
             Some(id) if id.sku == "" => return Err(Status::invalid_argument(EMPTY_SKU_ERR)),
@@ -69,7 +70,8 @@ impl Inventory for StoreInventory {
         if let Some(_) = map.get(&sku) {
             return Err(Status::already_exists(DUP_ITEM_ERR));
         }
-
+        
+        println!("Added new product with {:?} sku", sku);
         map.insert(sku, item);
 
         Ok(Response::new(InventoryChangeResponse {
@@ -81,6 +83,7 @@ impl Inventory for StoreInventory {
         &self, 
         request: Request<ItemIdentifier>
     ) -> Result<Response<InventoryChangeResponse>, Status> {
+        println!("RCP call to Remove method...");
         let identifier = request.into_inner();
 
         if identifier.sku == "" {
@@ -93,6 +96,8 @@ impl Inventory for StoreInventory {
             None => "success: Item did not exist"
         };
 
+        println!("Removed the product with {:?} sku", &identifier.sku);
+
         Ok(Response::new(InventoryChangeResponse {
             status: msg.into()
         }))
@@ -102,6 +107,7 @@ impl Inventory for StoreInventory {
         &self,
         request: Request<ItemIdentifier>
     ) -> Result<Response<Item>, Status> {
+        println!("RCP call to Get method...");
         let identifier = request.into_inner();
         
         if identifier.sku == "" {
@@ -122,6 +128,7 @@ impl Inventory for StoreInventory {
         &self,
         request: Request<QuantityChangeRequest>
     ) -> Result<Response<InventoryUpdateResponse>, Status> {
+        println!("RCP call to update_quantity method...");
         let update = request.into_inner();
 
         if update.sku == "" {
@@ -166,6 +173,7 @@ impl Inventory for StoreInventory {
         &self,
         request: Request<PriceChangeRequest>
     ) -> Result<Response<InventoryUpdateResponse>, Status> {
+        println!("RCP call to update_price method...");
         let update = request.into_inner();
 
         // don't allow empty SKU
@@ -214,10 +222,13 @@ impl Inventory for StoreInventory {
         &self,
         request: Request<ItemIdentifier>
     ) -> Result<Response<Self::WatchStream>, Status> {
+        println!("RCP call to Watch method...");
         // retrieve the relevant item and get a baseline
         let item_identifier = request.into_inner();
-
+        // Create a new request to get the item
         let mut item = self.get(Request::new(item_identifier.clone())).await?.into_inner();
+
+        println!("Get item: {:?} with {:?} identifier", &item, &item_identifier);
 
         let (tx, rx) = mpsc::unbounded_channel();
 
@@ -227,7 +238,7 @@ impl Inventory for StoreInventory {
             loop {
                 // Check every one second like this the loop is not going to be that intense
                 tokio::time::sleep(std::time::Duration::from_secs(1)).await;
-
+                println!("Wake up after 1000 ms sleep");
                 let map = inventory.lock().await;
                 let item_refresh = match map.get(&item_identifier.sku) {
                     Some(item) => item,
@@ -242,15 +253,20 @@ impl Inventory for StoreInventory {
                 // check to see if the item has changed since we last saw it,
                 // and if it has inform the client via the stream.
                 if item_refresh != &item {
+                    println!("WATCH: Detected some changes in the item, message to the client");
                     if let Err(err) = tx.send(Ok(item_refresh.clone())) {
                         println!("ERROR: failed to update stream client: {:?}", err);
                         return;
+                    } else {
+                        println!("Some changes in the item!");
                     }
                 }
                 // cache the most recent copy of the item
                 item = item_refresh.clone()
             }
         });
+
+        println!("End of the tokio:spawn...");
 
         let stream = UnboundedReceiverStream::new(rx);
         Ok(Response::new(Box::pin(stream) as Self::WatchStream))

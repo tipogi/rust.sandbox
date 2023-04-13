@@ -57,17 +57,6 @@ Like in all binary files, the main function is `main` function
 - At any given time, we can have either one mutable reference or any number of immutable references
 - References must always be valid
 
-## Videos
-
-- Ryan Levick's, [Introduction to Rust](https://www.youtube.com/watch?v=WnWGO-tLtLA)
-- Let's get Rusty's, [The Rust Lang Book](https://www.youtube.com/watch?v=OX9HJsJUDxA&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8)
-- Rust Tutorial, [Doug Milford](https://www.youtube.com/watch?v=2KTG3OQPPJ4&list=PLLqEtX6ql2EyPAZ1M2_C0GgVd4A-_L4_5&index=3)
-- Derek Banas, [Rust tutorial full course](https://www.youtube.com/watch?v=ygL_xcavzQ4)
-- [Pointers and dynamic memory - stack vs heap](https://www.youtube.com/watch?v=_8-ht2AKyH4)
-- [Visualizing memory layout of Rust's data types](https://www.youtube.com/watch?v=rDoqT-a6UFg)
-- The streams are intended for users who are already somewhat familiar with Rust, [Jon Gjengset](https://www.youtube.com/@JonGjengset/videos)
-- [Jeff No Zhao](https://www.youtube.com/playlist?list=PLkO5ggdQuRaaeFke7nWS4ajhFVZ1biE7_)
-
 ## Sources
 
 - [Cargo Book](https://doc.rust-lang.org/cargo/index.html): Cargo is the Rust package manager
@@ -86,6 +75,24 @@ Like in all binary files, the main function is `main` function
 - [Take your first steps with Rust](https://learn.microsoft.com/en-us/training/paths/rust-first-steps/)
 - [Curso de Rust para desarrolladores JavaScript](https://midu.dev/rust-para-desarrolladores-javascript/)
 
+## Videos
+
+- Ryan Levick's, [Introduction to Rust](https://www.youtube.com/watch?v=WnWGO-tLtLA)
+- Let's get Rusty's, [The Rust Lang Book](https://www.youtube.com/watch?v=OX9HJsJUDxA&list=PLai5B987bZ9CoVR-QEIN9foz4QCJ0H2Y8)
+- Rust Tutorial, [Doug Milford](https://www.youtube.com/watch?v=2KTG3OQPPJ4&list=PLLqEtX6ql2EyPAZ1M2_C0GgVd4A-_L4_5&index=3)
+- Derek Banas, [Rust tutorial full course](https://www.youtube.com/watch?v=ygL_xcavzQ4)
+- [Pointers and dynamic memory - stack vs heap](https://www.youtube.com/watch?v=_8-ht2AKyH4)
+- [Visualizing memory layout of Rust's data types](https://www.youtube.com/watch?v=rDoqT-a6UFg)
+- [Jeff No Zhao](https://www.youtube.com/playlist?list=PLkO5ggdQuRaaeFke7nWS4ajhFVZ1biE7_)
+
+## Channels
+
+- [Jon Gjengset](https://www.youtube.com/@jonhoo/videos)
+- [Ryan Levicks](https://www.youtube.com/@RyanLevicksVideos/videos)
+- [Let's get Rusty](https://www.youtube.com/@letsgetrusty/videos)
+- [Faster than lime](https://www.youtube.com/@fasterthanlime)
+- [Jacques](https://www.youtube.com/@jacques-dev)
+
 ## Databases
 
 - [SurrealDB](https://surrealdb.com/): It is the ultimate cloud database for tomorrow's applications
@@ -94,8 +101,3 @@ Like in all binary files, the main function is `main` function
 
 - `Programming Rust`: Fast, Safe Systems Development by Jason Orendorff, Jim Blandy, and Leonora F.S. Tindall
 - `The Rust Programming Language` by Steve Klabnik and Carol Nichols
-
-## Channels
-
-- [fasterthanlime](https://www.youtube.com/@fasterthanlime)
-- [Jacques](https://www.youtube.com/@jacques-dev)
