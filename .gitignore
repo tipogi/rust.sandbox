@@ -34,6 +34,8 @@
 /practise/playground/tls/tlsclient/Cargo.lock
 /practise/playground/tls/tlsserver/target
 /practise/playground/tls/tlsserver/Cargo.lock
+/practise/playground/warp-websocket-server/target
+/practise/playground/warp-websocket-server/Cargo.lock
 
 # IGNORE FREE PLAYGROUND
 /free
