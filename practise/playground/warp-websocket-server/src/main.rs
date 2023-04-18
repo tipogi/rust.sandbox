@@ -1,5 +1,6 @@
 // Add to use WebSocket::split
 use futures::StreamExt;
+use warp::hyper::{Response, StatusCode};
 use std::fs;
 use std::{env, net::SocketAddr};
 use std::{collections::HashMap, sync::Arc};
@@ -7,7 +8,7 @@ use tokio::sync::{RwLock, mpsc};
 use tokio_stream::wrappers::UnboundedReceiverStream;
 use warp::ws::{Message, WebSocket};
 // use map function 
-use warp::Filter;
+use warp::{Filter, Reply, Rejection};
 
 static NEXT_USERID: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(1);
 
@@ -23,7 +24,10 @@ async fn main() {
     let socket_address: SocketAddr = addr.parse().expect("Cannot find a valid socket address");
 
     let users = Users::default();
-    let users = warp::any().map(move || users.clone());
+    let users_a = users.clone();
+    let users_b = users.clone();
+    let users = warp::any().map(move || users_a.clone());
+    let users_conn = warp::any().map(move || users_b.clone());
 
     let hello_opt = warp::path::param::<String>()
         .map(Some)
@@ -42,6 +46,10 @@ async fn main() {
         .and(users)
         .map(| ws: warp::ws::Ws, users | ws.on_upgrade(move | socket | connect(socket, users)));
 
+    let ws_connected_endpoint = warp::path("connected")
+        .and(users_conn)
+        .and_then(connected_users);
+
     let files = warp::fs::dir("./static");
 
     let res_404 = warp::any().map(|| {
@@ -50,13 +58,23 @@ async fn main() {
             .body(fs::read_to_string("./static/404.html").expect("404 404?"))
     });
 
-    let routes = ws_endpoint.or(hello_endpoint).or(files).or(res_404);
+    let routes = ws_endpoint
+        .or(hello_endpoint)
+        .or(ws_connected_endpoint)
+        .or(files)
+        .or(res_404);
 
     let server = warp::serve(routes).try_bind(socket_address);
 
     println!("Running server at {}!", addr);
 
     server.await
+}
+
+async fn connected_users(users: Users) -> std::result::Result<impl Reply, Rejection> {
+    println!("Request connected users...");
+    let size = users.read().await.len();
+    Ok(format!("Connected users #{}", size))
 }
 
 
@@ -76,17 +94,18 @@ async fn connect(ws: WebSocket, users: Users) {
 
     // Reading and broadcasting messages
     while let Some(result) = user_rx.next().await {
-        println!("Message received");
-        broadcast_msg(result.expect("Failed to fetch message"), &users).await;
+        println!("Broadcast message from {}", new_id);
+        broadcast_msg(result.expect("Failed to fetch message"), &users, new_id).await;
     }
 
     disconnect(new_id, &users).await;
 }
 
-async fn broadcast_msg(msg: Message, users: &Users) {
+async fn broadcast_msg(msg: Message, users: &Users, user_id: usize) {
     if let Ok(_) = msg.to_str() {
         for (&_uid, tx) in users.read().await.iter() {
-            tx.send(Ok(msg.clone())).expect("Failed to send message");
+            let formatted_message = format!("{}: {:}", user_id, msg.to_str().unwrap());
+            tx.send(Ok(Message::text(formatted_message))).expect("Failed to send message");
         }
     }
 }
