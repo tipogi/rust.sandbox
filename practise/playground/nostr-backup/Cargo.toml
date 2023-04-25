@@ -1,0 +1,15 @@
+[package]
+name = "nostr-backup"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.27.0", features = ["full"] }
+clap = { version = "4.2.2", features = ["derive"] }
+dialoguer = "0.10"
+nostr-sdk = "0.21.0"
+bech32 = "0.9.1"
+hex = "0.4.3"
+serde_json = "1.0.96"

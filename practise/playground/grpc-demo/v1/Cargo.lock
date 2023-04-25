@@ -314,23 +314,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "grpc-demo"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "clap",
- "futures",
- "futures-util",
- "prost",
- "tokio",
- "tokio-stream",
- "tonic",
- "tonic-build",
- "tonic-reflection",
- "uuid",
-]
-
-[[package]]
 name = "h2"
 version = "0.3.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1120,6 +1103,23 @@ checksum = "1674845326ee10d37ca60470760d4288a6f80f304007d92e5c53bab78c9cfd79"
 dependencies = [
  "getrandom",
  "rand",
+]
+
+[[package]]
+name = "v1"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "clap",
+ "futures",
+ "futures-util",
+ "prost",
+ "tokio",
+ "tokio-stream",
+ "tonic",
+ "tonic-build",
+ "tonic-reflection",
+ "uuid",
 ]
 
 [[package]]

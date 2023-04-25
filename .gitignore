@@ -24,9 +24,9 @@
 /practise/playground/my-redis/target
 /practise/playground/my-redis/Cargo.lock
 /practise/playground/grpc-demo/v1/target
-/practise/playground/grpc-demo/v1/cargo.lock
+/practise/playground/grpc-demo/v1/Cargo.lock
 /practise/playground/grpc-demo/v2/target
-/practise/playground/grpc-demo/v2/cargo.lock
+/practise/playground/grpc-demo/v2/Cargo.lock
 /practise/playground/grpc-demo/src/store.rs
 /practise/playground/secure-hyper/target
 /practise/playground/secure-hyper/Cargo.lock
@@ -36,6 +36,9 @@
 /practise/playground/tls/tlsserver/Cargo.lock
 /practise/playground/warp-websocket-server/target
 /practise/playground/warp-websocket-server/Cargo.lock
+/practise/playground/nostr-backup/Cargo.lock
+/practise/playground/nostr-backup/target
+/practise/playground/nostr-backup/backup.json
 
 # IGNORE FREE PLAYGROUND
 /free
