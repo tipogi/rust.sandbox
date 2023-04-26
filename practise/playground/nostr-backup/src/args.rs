@@ -1,18 +1,18 @@
-use clap::{arg, Parser, command, ArgGroup};
+use clap::{arg, Parser, command};
 
-use crate::services::key_converter;
+use crate::enums::Prefix;
 
 /// A nostr tool that you can encode/decode the key (npub, nsec) types and
 /// also create a backup of all your followers/followed peers
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 
-#[clap(group(
-    //  input error handling: only exactly ONE of 'n' args can be used
-    ArgGroup::new("backup_conditions")
-        .required(false)
-        .args(&["followers", "following"])
-))]
+// #[clap(group(
+//     //  input error handling: only exactly ONE of 'n' args can be used
+//     ArgGroup::new("backup_conditions")
+//         .required(false)
+//         .args(&["followers", "following"])
+// ))]
 // In that case the to_hex is not mandatory because it is a boolean
 // If we do not add the arguments means that we do not want encode to hex format
 /*#[clap(group(
@@ -70,7 +70,7 @@ pub struct Args {
         value_name = "KIND",
         requires = "key",
     )]
-    pub kind: Option<key_converter::Prefix>,
+    pub kind: Option<Prefix>,
 
     /// boolean flag indicating to convert keys from bech32 to hex. If not it would be in opposite way
     #[arg(

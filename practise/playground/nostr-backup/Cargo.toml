@@ -13,3 +13,5 @@ nostr-sdk = "0.21.0"
 bech32 = "0.9.1"
 hex = "0.4.3"
 serde_json = "1.0.96"
+# Serde is a framework for serializing and deserializing Rust data structures efficiently and generically
+serde = "1.0.160"

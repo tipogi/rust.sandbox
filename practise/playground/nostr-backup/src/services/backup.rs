@@ -1,21 +1,17 @@
-use std::fs::File;
 use nostr_sdk::{Keys, prelude::*};
 use crate::constants;
+use crate::enums::Prefix;
 use crate::services::key_converter;
+use crate::structs::peers::Peers;
 
 
-pub async fn create_backup_file(_followers: bool, _following: bool, key: &String, private_key: bool) {
-    key_converter::decode_to_hex(key);
-    // TODO: Cannot let to add the private key. Set clap
-    // Create the keys
-    let nostr_key = match private_key {
-        true => Keys::from_sk_str(key).unwrap(),
-        _ => Keys::from_pk_str(key).unwrap()
-    };
-
-    /*let options = Options::new().timeout(Some(Duration::from_secs(20)));
-    let client = Client::with_opts(&nostr_key, options);*/
+pub async fn create_backup_file(key: &String, followers: bool, following: bool) {
     
+    // Before make the backup, check if the bech32 and HEX key are correct ones
+    // Also if our key is in HEX format, encode to bech32 format
+    let (npub_key, _hex_key) = key_converter::display_key_info(&key, Prefix::Npub);
+
+    let nostr_key = Keys::from_pk_str(&npub_key).unwrap();
     let client = Client::new(&nostr_key);
     
     for relay in constants::get_relays().iter() {
@@ -25,62 +21,71 @@ pub async fn create_backup_file(_followers: bool, _following: bool, key: &String
 
     client.connect().await;
 
-    let mut nostr_bech32_key = key.to_string();
-
-    if !key_converter::bech32_checksum(key) {
-        nostr_bech32_key = key_converter::encode_to_bech32("npub", key);
-    }
-
-    let _bech32 = XOnlyPublicKey::from_bech32(&nostr_bech32_key).expect("Cannot get the XOnlyPubKey");
-
-    let author_vector = client.keys().public_key().to_string();
+    let mut peers_backup = Peers::new();
 
     println!("Waiting to subscription...");
 
-    let subscription = Filter::new()
-        .kind(Kind::ContactList)
-        .author(author_vector);
+    if following {
+        let author = client.keys().public_key().to_string();
 
-    client.subscribe(vec![subscription]).await;
+        let following_subscription = Filter::new()
+            .kind(Kind::ContactList)
+            .author(author);
+
+        let following_peers = subscribe_to_relay(&client, following_subscription).await;
+
+        if !following_peers.is_empty() {
+            peers_backup.add_follows(&following_peers[0].tags);
+        }
+    }
+
+    if followers {
+        let bech32 = XOnlyPublicKey::from_bech32(&npub_key).expect("Cannot get the XOnlyPubKey");
+
+        let followers_subscription = Filter::new()
+            .kind(Kind::ContactList)
+            .pubkey(bech32);
+
+        let followers_peers = subscribe_to_relay(&client, followers_subscription).await;
+
+        if !followers_peers.is_empty() {
+            peers_backup.add_followers(followers_peers);
+        }
+    }
     
+    println!("Data extracted from the relays so disconnecting...");
+    client.disconnect().await.unwrap();
+    println!("Client disconnected succesfully");
 
+    peers_backup.export_peers();
+}
+
+async fn subscribe_to_relay(client: &Client, subscription: Filter) -> Vec<Event> {
+
+    let mut events: Vec<Event> = vec![];
+
+    println!("Nostr client trying to subscribe to the relay...");
+    client.subscribe(vec![subscription]).await;
     println!("Subscribed!");
 
     let mut notifications = client.notifications();
     while let Ok(notification) = notifications.recv().await {
         // Process Events 
         if let RelayPoolNotification::Event(_url, event) = notification {
-            // println!("Event URL: {}", url);
-            save_file(event.tags);   
-            // println!("\n\n");
-            client.disconnect().await.unwrap();
+            // Populate events until we receive a empty Message
+            events.push(event);   
         }
-        // Process messages
+        // Process Messages
         else if let RelayPoolNotification::Message(_url, message) = notification {
-            // println!("Message URL: {:?}", url);
-            // println!("{:?}", message::RelayMessage::Empty);
             if message::RelayMessage::Empty == message {
-                println!("exit");
+                println!("The relays does not have more data to offer, unsubscribe...");
                 break;
             }
         }
     }
-    
-    // Get the following peers
-    // Get the followers peers
-    // Create the JSON file
-}
+    // Unsubscribe from the applied filters
+    client.unsubscribe().await;
+    println!("Unsubscribed!");
 
-fn save_file(tags: Vec<Tag>) {
-    let mut peers: Vec<String> = vec![];
-    for pub_key in tags.into_iter() {
-        peers.push(pub_key.as_vec()[1].clone());
-    }
-    let peers_json = serde_json::to_string(&peers).unwrap();
-    File::create(constants::BACKUP_FILE).unwrap();
-    std::fs::write(constants::BACKUP_FILE, peers_json).unwrap();
-
-}
-
-pub async fn set_meta_data(_key: &String) {
+    events
 }

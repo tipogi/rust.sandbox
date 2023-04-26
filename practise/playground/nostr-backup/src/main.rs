@@ -7,8 +7,8 @@ async fn main() {
 
    match Args::parse() {
     args if args.backup => {
-      let Args { followers, following, key, nsec, .. } = args;
-      backup::create_backup_file(followers, following, &key, nsec).await
+      let Args { followers, following, key, .. } = args;
+      backup::create_backup_file(&key, followers, following).await
     }
     _ => println!("No Action!")
   }
