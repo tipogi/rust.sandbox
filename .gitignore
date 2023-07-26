@@ -39,6 +39,11 @@
 /practise/playground/nostr-backup/Cargo.lock
 /practise/playground/nostr-backup/target
 /practise/playground/nostr-backup/backup.json
+/practise/playground/todo-notifier/Cargo.lock
+/practise/playground/todo-notifier/target
+/practise/playground/todo-notifier/files
+/practise/theory/common_mistakes/Cargo.lock
+/practise/theory/common_mistakes/target
 
 # IGNORE FREE PLAYGROUND
 /free

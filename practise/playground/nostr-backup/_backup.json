@@ -1,0 +1,16 @@
+{
+    "following": [
+        "npub1za04drthlvxtwsq0phwc4mgh8rxhjafjkv2w7pf6ze5afka8gvaquadur3",
+        "npub1qqqqqqqx2tj99mng5qgc07cgezv5jm95dj636x4qsq7svwkwmwnse3rfkq",
+        "npub1lnms53w04qt742qnhxag5d6awy7nz6055flnmjkr6jg39hm86dlq7arrnt",
+        "npub15c88nc8d44gsp4658dnfu5fahswzzu8gaxm5lkuwjud068swdqfspxssvx",
+        "npub1dtmp3wrkyqafghjgwyk88mxvulfncc9lg6ppv4laet5cun66jtwqqpgte6",
+        "npub1l2vyh47mk2p0qlsku7hg0vn29faehy9hy34ygaclpn66ukqp3afqutajft",
+        "npub1yn3hc8jmpj963h0zw49ullrrkkefn7qxf78mj29u7v2mn3yktuasx3mzt0",
+        "npub1pazuhetzx5w8yyt59lszeslxlywkeadnq6rncre7nlqv2uxnxuwq8c56r9",
+        "npub12rv5lskctqxxs2c8rf2zlzc7xx3qpvzs3w4etgemauy9thegr43sf485vg",
+        "npub1yhawwcfyqs34uv7fgsmph97wcew9p693n8x84vj763hufdcwyahqaufs46"
+    ],
+    "followers": [],
+    "relays": "{\"wss://relay.snort.social/\":{\"read\":true,\"write\":true},\"wss://nostr.wine/\":{\"read\":true,\"write\":false},\"wss://nos.lol/\":{\"read\":true,\"write\":false},\"wss://nostr.mom/\":{\"read\":true,\"write\":false},\"wss://relay.damus.io/\":{\"read\":true,\"write\":false}}"
+}

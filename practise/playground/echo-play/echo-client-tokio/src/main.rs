@@ -16,9 +16,11 @@ async fn main() {
     // With that model, it calls to await and that thread essentially would
     // be returned back to the pool
     // In that case, it can process other things on that thread and execute
+    //
     // Rust does not have an asynchronous runtime as NodeJS and because of that
-    // we need a thread pool underneath of that, it needs a worker pull to manage
+    // we need a thread pool underneath of that, it needs a worker poll to manage
     // those io type connections.
+    //
     // Thats what provides an asynchronous runtime, a thread pool and for that we have tokio
     // Futures: Abstractions for asynchronous
     if let Ok(mut stream) = TcpStream::connect(KARIN_SERVER_ADDRESS).await {

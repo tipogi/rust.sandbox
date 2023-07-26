@@ -43,17 +43,24 @@ impl Executor {
             //println!("{:?}", event);
             att += 1;
             if event.token() == mio::Token(1) && event.is_readable() {
+                println!("In #1 client incoming message...");
                 let mut buf = [0;10];
                 match self.clients[0].read_exact(&mut buf) {
-                    Err(e) => println!("{:?}", e),
+                    Err(e) => println!("ERROR in #1: {:?}", e),
                     Ok(func) => func 
                 }
                 self.client_total[0] += 1;
             } else if event.token() == mio::Token(2) && event.is_readable() {
+                println!("In #2 client incoming message...");
                 let mut buf = [0;10];
-                self.clients[1].read_exact(&mut buf).expect("The server is not listening on PORT 8001");
+                //self.clients[1].read_exact(&mut buf).expect("The server is not listening on PORT 8001");
+                match self.clients[1].read_exact(&mut buf) {
+                    Err(e) => println!("ERROR in #2: {:?}", e),
+                    Ok(func) => func 
+                }
                 self.client_total[1] += 1;
             } else if event.token() == mio::Token(3) && event.is_readable() {
+                println!("In #3 client incoming message...");
                 let mut buf = [0;20];
                 self.clients[2].read_exact(&mut buf).unwrap();
                 let h_string = str::from_utf8(&buf).unwrap();

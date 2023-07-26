@@ -11,6 +11,7 @@ pub fn main() {
     println!("connecting to {}...", ECHO_SERVER_ADDRESS);
     // Establish connection with remote TCP server host
     // With that connect, the thread is blocked because it is an synchronous connection
+    //
     // It calls a blocking call because it waits until it returns the socket and nothing
     // more can execute in that thread
     if let Ok(mut stream) = TcpStream::connect(ECHO_SERVER_ADDRESS) {

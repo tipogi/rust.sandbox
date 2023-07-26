@@ -13,7 +13,7 @@ async fn main() {
     // Turbofish is an operator that is pretty unique to rust, it is a way to hint
     // the compiler, what kind of generic type we expect to be returned from a function
     // IMPORTANT: This is not a socket, it is an internal communication layer, queue
-           
+    let (tx, _rx) = broadcast::channel::<String>(CHANNEL_PARTICIPANTS);
     // Wait for each client
     loop {
         let (mut socket, _addr) = listener.accept().await.unwrap();

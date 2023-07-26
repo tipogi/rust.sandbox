@@ -1,11 +1,13 @@
 use nostr_sdk::{Keys, prelude::*};
-use crate::constants;
+use crate::utils::relay;
 use crate::enums::Prefix;
-use crate::services::key_converter;
+use crate::utils::key_converter;
 use crate::structs::peers::Peers;
 
 
-pub async fn create_backup_file(key: &String, followers: bool, following: bool) {
+pub async fn create_backup_file(wrapped_key: Option<String>, followers: bool, following: bool) {
+
+    let key = wrapped_key.unwrap();
     
     // Before make the backup, check if the bech32 and HEX key are correct ones
     // Also if our key is in HEX format, encode to bech32 format
@@ -14,30 +16,35 @@ pub async fn create_backup_file(key: &String, followers: bool, following: bool) 
     let nostr_key = Keys::from_pk_str(&npub_key).unwrap();
     let client = Client::new(&nostr_key);
     
-    for relay in constants::get_relays().iter() {
-        println!("Adding relay {} to the client...", relay);
-        client.add_relay(relay, None).await.unwrap();
-    }
+    relay::add_to_client(&client).await;
 
+    println!("🟪 The client connecting to relays...");
     client.connect().await;
+    println!("✅ Connected!");
 
     let mut peers_backup = Peers::new();
 
-    println!("Waiting to subscription...");
+    println!("\n📡 Waiting to add a subscription...");
 
     if following {
         let author = client.keys().public_key().to_string();
 
         let following_subscription = Filter::new()
             .kind(Kind::ContactList)
+            // is it necessary? it just persist one event and overwrites the actual one?
+            .limit(1)
             .author(author);
 
         let following_peers = subscribe_to_relay(&client, following_subscription).await;
 
         if !following_peers.is_empty() {
             peers_backup.add_follows(&following_peers[0].tags);
+            peers_backup.add_relays(&following_peers[0].content);
+            println!("{:?}", peers_backup);
         }
     }
+
+    println!("\n📡 Waiting to add a subscription...");
 
     if followers {
         let bech32 = XOnlyPublicKey::from_bech32(&npub_key).expect("Cannot get the XOnlyPubKey");
@@ -53,9 +60,9 @@ pub async fn create_backup_file(key: &String, followers: bool, following: bool) 
         }
     }
     
-    println!("Data extracted from the relays so disconnecting...");
+    println!("🌅 Data extracted from the relays so disconnecting...");
     client.disconnect().await.unwrap();
-    println!("Client disconnected succesfully");
+    println!("✅ Client disconnected succesfully");
 
     peers_backup.export_peers();
 }
@@ -64,9 +71,9 @@ async fn subscribe_to_relay(client: &Client, subscription: Filter) -> Vec<Event>
 
     let mut events: Vec<Event> = vec![];
 
-    println!("Nostr client trying to subscribe to the relay...");
+    println!("📣 Adding a filter to the subscription pipe...");
     client.subscribe(vec![subscription]).await;
-    println!("Subscribed!");
+    println!("✅ Subscribed!");
 
     let mut notifications = client.notifications();
     while let Ok(notification) = notifications.recv().await {
@@ -78,14 +85,14 @@ async fn subscribe_to_relay(client: &Client, subscription: Filter) -> Vec<Event>
         // Process Messages
         else if let RelayPoolNotification::Message(_url, message) = notification {
             if message::RelayMessage::Empty == message {
-                println!("The relays does not have more data to offer, unsubscribe...");
+                println!("🪦 The relays does not have more data to offer, unsubscribe...");
                 break;
             }
         }
     }
     // Unsubscribe from the applied filters
     client.unsubscribe().await;
-    println!("Unsubscribed!");
+    println!("✅ Unsubscribed!");
 
     events
 }

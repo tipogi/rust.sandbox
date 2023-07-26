@@ -61,8 +61,9 @@ Like in all binary files, the main function is `main` function
 
 - [Cargo Book](https://doc.rust-lang.org/cargo/index.html): Cargo is the Rust package manager
 - [Learn Rust](https://www.rust-lang.org/learn): Rust official documentation
-- [Rust by example](https://doc.rust-lang.org/rust-by-example/index.html): Rust by Example (RBE) is a collection of runnable examples that illustrate various Rust concepts and standard libraries
 - [The Rust reference](https://doc.rust-lang.org/reference/introduction.html): This book does not serve as an introduction to the language. Background familiarity with the language is assumed
+- [Crates.io](https://crates.io/): The Rust community’s crate registry
+- [Rust by example](https://doc.rust-lang.org/rust-by-example/index.html): Rust by Example (RBE) is a collection of runnable examples that illustrate various Rust concepts and standard libraries
 - [Rust Async Book](https://rust-lang.github.io/async-book/)
 - [Rust Standard library](https://doc.rust-lang.org/std/index.html): API reference
 - [Rust by Practise](https://practice.rs/why-exercise.html): This book was designed for easily diving into and get skilled with Rust, and it's very easy to use: All you need to do is to make each exercise compile without ERRORS and Panics !
@@ -71,7 +72,6 @@ Like in all binary files, the main function is `main` function
 - [Rust Language Cheat Sheet](https://cheats.rs/): A single-page Rust resource for people who like high information density.
 - [Ideomatic Rust](https://github.com/grunch/idiomatic-rust): A peer-reviewed collection of articles/talks/repos which teach concise, idiomatic Rust.
 - [Rustlings](https://github.com/rust-lang/rustlings): Small exercises to get you used to reading and writing Rust code!
-- [Crates.io](https://crates.io/): The Rust community’s crate registry
 - [Take your first steps with Rust](https://learn.microsoft.com/en-us/training/paths/rust-first-steps/)
 - [Curso de Rust para desarrolladores JavaScript](https://midu.dev/rust-para-desarrolladores-javascript/)
 

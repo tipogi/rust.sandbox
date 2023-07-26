@@ -42,8 +42,8 @@ pub fn display_key_info(key: &String, prefix: Prefix) -> (String, String) {
         bech32 = encode_to_bech32(prefix, &hex);
     }
     println!("\n############### YOUR KEY INFO ###############");
-    println!("HEX format key: {:?}", hex);
-    println!("Bech32 format key: {:?}\n", bech32);
+    println!("🔑 hex format key: {:?}", hex);
+    println!("🔑 bech32 format key: {:?}\n", bech32);
 
     (bech32, hex)
 }

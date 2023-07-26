@@ -38,6 +38,7 @@ async fn main() {
                         // The message that we receive from the broadcast channel (internal)
                         let (msg, sender_addr) = result.unwrap();
                         if sender_addr != addr {
+                            println!("Send other peers {}", sender_addr);
                             // Send back to the connection that the client open
                             writter.write_all(msg.as_bytes()).await.unwrap();
                         }

@@ -26,8 +26,6 @@ pub struct Args {
     /// boolean flag to create the account backup from a key
    #[arg(
         long, 
-        default_value_t = false, 
-        required = false,
         requires = "key",
     )]
     pub backup: bool,
@@ -35,7 +33,6 @@ pub struct Args {
     /// boolean flag to create the backup of the followers
     #[arg(
         long, 
-        default_value_t = false, 
         requires = "backup",
     )]
     pub followers: bool,
@@ -43,7 +40,6 @@ pub struct Args {
     /// boolean flag to create the backup of the following peers
     #[arg(
         long, 
-        default_value_t = false, 
         requires = "backup",
     )]
     pub following: bool,
@@ -52,7 +48,6 @@ pub struct Args {
     /// We do NOT recommend to use the private key to do the backup, better use the public key (npub).
     #[arg(
         long, 
-        default_value_t = false, 
     )]
     pub nsec: bool,
 
@@ -60,9 +55,10 @@ pub struct Args {
     /// use your public key not the private one
    #[arg(
         long,
-        value_name = "KEY"
+        value_name = "KEY",
    )]
-   pub key: String,
+   // It is not boolean so wrapped in an Option type
+   pub key: Option<String>,
 
    /// the kind of entity (npub/nsec/note) being converted from hex to bech32-formatted string
    #[arg(
@@ -70,12 +66,23 @@ pub struct Args {
         value_name = "KIND",
         requires = "key",
     )]
+    // It is not boolean so wrapped in an Option type
     pub kind: Option<Prefix>,
 
     /// boolean flag indicating to convert keys from bech32 to hex. If not it would be in opposite way
     #[arg(
         long,
-        default_value_t = false, 
     )]
     pub to_hex: bool,
+
+    #[arg(
+        long, 
+        requires = "key",
+    )]
+    pub account: bool,
+
+    #[arg(
+        long,
+    )]
+    pub meta: bool,
 }
