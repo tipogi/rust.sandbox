@@ -99,5 +99,6 @@ Like in all binary files, the main function is `main` function
 
 ## Books
 
+- [Rust for Rustaceans](https://rust-for-rustaceans.com/): by Jon Gjengset
 - `Programming Rust`: Fast, Safe Systems Development by Jason Orendorff, Jim Blandy, and Leonora F.S. Tindall
 - `The Rust Programming Language` by Steve Klabnik and Carol Nichols
